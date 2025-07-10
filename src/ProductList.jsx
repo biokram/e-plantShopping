@@ -4,8 +4,8 @@ import CartItem from './CartItem';
 import addItem from './CartSlice.jsx';
 
 function ProductList({ onHomeClick }) {
-    const [showCart, setShowCart] = useState(false);
-    const [showPlants, setShowPlants] = useState(false); 
+    const [showCart, setShowCart] = useState();
+    const [showPlants, setShowPlants] = useState(); 
     const [addedToCart, setAddedToCart] = useState({});
 
     const plantsArray = [

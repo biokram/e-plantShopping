@@ -8,56 +8,56 @@ const CartItem = ({ onContinueShopping }) => {
   const dispatch = useDispatch();
 
   // Calculate total amount for all products in the cart
-  const calculateTotalAmount = () => {
+  const calculateTotalAmount = (cart) => {
     let total = 0;
     cart.forEach(item => {
       const quantity = item.quantity;
-      const cost = parseFloat(item.cost.substring(1)); // Remove the dollar sign
-      total += cost * quantity;
+      const costNumber = parseFloat(item.cost.substring(1));
+      total += costNumber * quantity
     });
 
     return total;
+
   };
 
   const handleContinueShopping = (e) => {
-    e.preventDefault();
-    if (onContinueShopping) {
-      onContinueShopping();
-    } else {
-      alert('Functionality to be added for future reference');
-    }
+    onContinueShopping(e);
   };
 
   const handleCheckoutShopping = (e) => {
-  alert('Functionality to be added for future reference');
-};
+    alert('Functionality to be added for future reference');
+  };
+
+
 
   const handleIncrement = (item) => {
     dispatch(updateQuantity({ name: item.name, quantity: item.quantity + 1 }));
   };
 
   const handleDecrement = (item) => {
-    if ([item].quantity > 0){
-        dispatch(updateQuantity({ name: item.name, quantity: item.quantity - 1 }));
-    }else{
-        handleRemove(item);
-    };
+    if (item.quantity > 1) {
+      dispatch(updateQuantity({ name: item.name, quantity: item.quantity - 1 }));
+    } else {
+      dispatch(removeItem(item.name))
+    }
+    
   };
 
   const handleRemove = (item) => {
-    dispatch(removeItem(item.name));
+    dispatch(removeItem(item.name))
   };
 
   // Calculate total cost based on quantity for an item
   const calculateTotalCost = (item) => {
-    const quantity = item.quantity;
-    const cost = parseFloat(item.cost.substring(1)); // Remove the dollar sign
-    return (cost * quantity); // Return total cost
-  }
+    const unitPrice = parseFloat(item.cost.substring(1));
+    const subtotal = unitPrice * item.quantity;
+    return subtotal;
+
+  };
 
   return (
     <div className="cart-container">
-      <h2 style={{ color: 'black' }}>Total Cart Amount: ${calculateTotalAmount()}</h2>
+      <h2 style={{ color: 'black' }}>Total Cart Amount: ${calculateTotalAmount(cart)}</h2>
       <div>
         {cart.map(item => (
           <div className="cart-item" key={item.name}>
@@ -87,5 +87,3 @@ const CartItem = ({ onContinueShopping }) => {
 };
 
 export default CartItem;
-
-
